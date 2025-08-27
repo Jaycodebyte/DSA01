@@ -1,0 +1,27 @@
+class Solution {
+  public:
+  //Jay
+   int countTriangles(vector<int>& arr) {
+    int n = arr.size();
+    sort(arr.begin(), arr.end()); // Step 1: sort
+    int count = 0;
+
+    
+    for (int k = n - 1; k >= 2; k--) {
+        int i = 0, j = k - 1;
+
+        while (i < j) {
+            if (arr[i] + arr[j] > arr[k]) {
+           
+                count += (j - i);
+                j--;
+            } else {
+                i++;
+            }
+        }
+    }
+
+    return count;
+         
+    }
+};
