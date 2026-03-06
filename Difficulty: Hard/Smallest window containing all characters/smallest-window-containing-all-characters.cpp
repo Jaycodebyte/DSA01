@@ -1,47 +1,44 @@
 class Solution {
   public:
-        //Jay
-    string smallestWindow(string &s, string &p) {
-    vector<int> freqP(26, 0);
-    for (char ch : p) {
-        freqP[ch - 'a']++;
-    }
-    vector<int> freqS(26, 0);  
-    int required = p.size(); 
-    int formed = 0;           
-    int left = 0, right = 0;
-    int minLen = INT_MAX;
-    int startIdx = -1;
-
-    
-    while (right < s.size()) {
-        char ch = s[right];
-        freqS[ch - 'a']++;
-
-        if (freqS[ch - 'a'] <= freqP[ch - 'a']) {
-            formed++;
+  //Jay
+   string minWindow(string s, string p) {
+        vector<int> need(256, 0);
+        vector<int> window(256, 0);
+        
+        for(char c : p) {
+            need[c]++;
         }
-        while (formed == required) {
-            int windowLen = right - left + 1;
-
-            if (windowLen < minLen) {
-                minLen = windowLen;
-                startIdx = left;
+        
+        int left = 0, count = 0;
+        int start = 0, minLen = INT_MAX;
+        
+        for(int right = 0; right < s.size(); right++) {
+            char c = s[right];
+            window[c]++;
+            
+            if(need[c] != 0 && window[c] <= need[c]) {
+                count++;
             }
-
-            char leftChar = s[left];
-            freqS[leftChar - 'a']--;
-
-            if (freqS[leftChar - 'a'] < freqP[leftChar - 'a']) {
-                formed--;
+            
+            while(count == p.size()) {
+                if(right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    start = left;
+                }
+                
+                char lc = s[left];
+                window[lc]--;
+                
+                if(need[lc] != 0 && window[lc] < need[lc]) {
+                    count--;
+                }
+                
+                left++;
             }
-
-            left++;
         }
-
-        right++;
-    }
-    if (startIdx == -1) return "";
-    return s.substr(startIdx, minLen);
+        
+        if(minLen == INT_MAX) return "";
+        
+        return s.substr(start, minLen);
     }
 };
