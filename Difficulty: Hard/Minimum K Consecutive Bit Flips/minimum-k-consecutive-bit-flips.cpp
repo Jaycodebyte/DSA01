@@ -1,27 +1,30 @@
 class Solution {
   public:
-    //Jay
-       int kBitFlips(vector<int>& arr, int k) {
-        int n = arr.size();
-        vector<int> isFlipped(n, 0);  
-        int flips = 0; 
-        int res = 0;   
-        for (int i = 0; i < n; i++) {
-          
-            if (i >= k) {
-                flips ^= isFlipped[i - k];
-            }
-
-           
-            if ((arr[i] ^ flips) == 0) {
+  //Jay
+    int kBitFlips(vector<int>& arr, int k) {
         
-                if (i + k > n) return -1; 
-                res++;
-                flips ^= 1;        
-                isFlipped[i] = 1; 
+        int n = arr.size();
+        vector<int> isFlipped(n, 0);
+        
+        int flip = 0;
+        int ans = 0;
+        
+        for(int i = 0; i < n; i++) {
+            
+            if(i >= k) {
+                flip ^= isFlipped[i-k];
+            }
+            
+            if((arr[i] ^ flip) == 0) {
+                
+                if(i + k > n) return -1;
+                
+                ans++;
+                flip ^= 1;
+                isFlipped[i] = 1;
             }
         }
-
-        return res;
+        
+        return ans;
     }
 };
